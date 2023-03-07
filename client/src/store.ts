@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { apiRequest } from './lib/api-request';
-import { StatusResponse, UserRepos, RepoSelected, PayloadSetSelector } from './interface';
+import { StatusResponse, UserRepos, RepoSelected, PayloadSetSelector, Commit, UserCommits } from './interface';
 
 
 
@@ -11,6 +11,7 @@ interface InitialStoreState {
 	statusResponse?: StatusResponse;
 	selector: RepoSelected;
 	setSelector: (payload: PayloadSetSelector) => void;
+	commits: UserCommits;
 	fetch?: () => void;
 }
 
@@ -21,6 +22,7 @@ const useStoreState = create<InitialStoreState>()(
 				loading: false,
 				selector: { first: 'test-home', second: 'nextjs-layout-state', name: 'luigifgp', mode: true },
 				userRepos: [],
+				commits: {firstCard: [], secondCard: []},
 				statusResponse: { message: '' },
 				setSelector: (payload: PayloadSetSelector) => set((state) => ({ selector: { ...state.selector, ...payload } })),
 				fetch: async () => {

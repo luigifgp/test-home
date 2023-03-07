@@ -47,6 +47,11 @@ interface Tree {
 	url: string;
 }
 
+export interface UserCommits {
+	firstCard: Commit[]
+	secondCard?: Commit[]
+}
+
 export interface StatusResponse {
 	message?: string;
 	status?: number;
