@@ -1,4 +1,4 @@
-export const ApiRequest = async (params: string[] | string) => {
+export const apiRequest = async (params: string[] | string) => {
 	const url = process.env.REACT_APP_API;
 	const apiKey = process.env.REACT_APP_API_KEY;
 	if (!url || !apiKey) {

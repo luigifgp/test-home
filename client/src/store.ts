@@ -1,28 +1,39 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { StatusResponse, UserRepos } from './interface'
+import { apiRequest } from './lib/api-request';
+import { StatusResponse, UserRepos, RepoSelected, PayloadSetSelector } from './interface';
 
-interface InitialState {
-  loading: boolean
-  userRepos: UserRepos[]
-  statusResponse?: StatusResponse
-  setInitialStore: (payload: InitialState) => void
+
+
+interface InitialStoreState {
+	loading: boolean;
+	userRepos: UserRepos[];
+	statusResponse?: StatusResponse;
+	selector: RepoSelected;
+	setSelector: (payload: PayloadSetSelector) => void;
+	fetch?: () => void;
 }
 
-const useInitialStore = create<InitialState>()(
-  devtools(
-    persist(
-      (set) => ({
-        loading: false,
-        userRepos: [],
-        statusResponse: { message: '', },
-        setInitialStore: (payload) => set(payload),
-      }),
-      {
-        name: 'test-home',
-      }
-    )
-  )
-)
+const useStoreState = create<InitialStoreState>()(
+	devtools(
+		persist(
+			(set) => ({
+				loading: false,
+				selector: { first: 'test-home', second: 'nextjs-layout-state', name: 'luigifgp', mode: true },
+				userRepos: [],
+				statusResponse: { message: '' },
+				setSelector: (payload: PayloadSetSelector) => set((state) => ({ selector: { ...state.selector, ...payload } })),
+				fetch: async () => {
+					// const userRepos = await apiRequest();
+					// const commits = await apiRequest('');
+					// const SelectedData = await apiRequest('');
+				},
+			}),
+			{
+				name: 'test-home',
+			}
+		)
+	)
+);
 
-export default useInitialStore
+export default useStoreState
