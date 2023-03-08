@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  client:
+    image: ferluigi/client-test-home:latest
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - shared-networks
+  server:
+    image: ferluigi/server-test-home:latest
+    ports:
+      - 4000:4000
+    restart: unless-stopped
+    networks:
+      - shared-networks
+
+networks: 
+  shared-networks:
+
+
