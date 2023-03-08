@@ -9,6 +9,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'https://server-test-home-luigi18.vercel.app',
+      'https://client-test-home.vercel.app',
       '*',
     ],
     allowedHeaders: ['Accept', 'Content-Type', '*'],
