@@ -6,16 +6,6 @@ base on `nestjs` that handle API request to Github.
 the expectation from the client is to show commits from this project and also
 from others users (if it is allow to show those commits).
 
-this required the following environment variables:
-
-```bash
-REACT_APP_API= /* Api-Link */
-REACT_APP_API_KEY= /* 'X-API-KEY' to protected the server API  */
-```
-
-Please remember to use the `.env.example` file that we have in our dir folder
-rename this file deleting ".example".
-
 ##How to run: 
 
 We have set on this app Docker repositories as docker images to make faster to 
@@ -26,18 +16,30 @@ run:
 #  docker compose up -d 
 ```
 
-we also have this application on live using vercel to deploy our client.
+we also have these application on live using vercel.
 
 ## link: https://client-test-home.vercel.app/
 
 Vercel is a serverless platform that allow us for easy and faster deployments for static sites, 
 built to integrate with your headless content, commerce, or database.
 
-Also Vercel allow us to deploy our server NESTJS app on:
+Also Vercel allow us to deploy our server NESTJS app:
 
 ## link: https://server-test-home.vercel.app/
 
 ##How to run without Docker
+
+## How to run without docker
+
+this required the following environment variables:
+
+```bash
+REACT_APP_API= /* Api-Link */
+REACT_APP_API_KEY= /* 'X-API-KEY' to protected the server API (It could be only anything of you choice) */
+```
+
+Please remember to use the `.env.example` file that we have in our dir folder
+rename this file deleting ".example".
 
 (only if we also wish to run our server on local)
 we need to change this environment variable on the client to a localhost i.e. `http://localhost:4000/`:
