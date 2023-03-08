@@ -1,7 +1,6 @@
 import { RepoSelected } from "../interface";
 import { apiRequest } from "./api-request";
 
-//TODO: handle error reponse and message
 export const fetchCommit = async (selected: RepoSelected) => {
 	const { first, second, name, mode } = selected;
 

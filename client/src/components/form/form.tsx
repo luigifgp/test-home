@@ -1,28 +1,31 @@
 import { SearchInput } from './search-input';
 import { OptionsInput } from './option-input';
 import { CheckBoxInput } from './checkbox-input';
-import { useEffect, useState } from 'react';
-import useStoreState from '../../store';
+import { useEffect } from 'react';
+import useStoreState from '../../lib/store';
 import { shallow } from 'zustand/shallow';
 
 export const Form = () => {
-	const [selector, setSelector, userRepos, loading, fetch] = useStoreState(
-		(state) => [state.selector, state.setSelector, state.userRepos, state.loading, state.fetch],
+	const [selector, setSelector, userRepos, loading, fetchUserRepos, fetchAll, isValidUser] = useStoreState(
+		(state) => [
+			state.selector,
+			state.setSelector,
+			state.userRepos,
+			state.loading,
+			state.fetchUserRepos,
+			state.fetchAll,
+			state.isValidUser,
+		],
 		shallow
 	);
-	const userValidation = userRepos[0] && userRepos[0].owner.login === selector?.name ? false : true;
 
 	useEffect(() => {
-		dispatchFetch();
+		fetchUserRepos();
 	}, []);
 
 	const HandleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
-		await dispatchFetch();
-	};
-
-	const dispatchFetch = async () => {
-		// await fetch();
+		await fetchAll();
 	};
 	return (
 		<div className='p-10 grid justify-items-stretch lg:grid-cols-18 gap-10 items-center'>
@@ -31,7 +34,7 @@ export const Form = () => {
 				onSubmit={HandleSubmit}>
 				<SearchInput
 					loading={loading}
-					valid={userValidation}
+					valid={isValidUser}
 					selectedName={selector?.name}
 					value={selector?.name}
 					onChange={(e) => setSelector({ name: e })}
@@ -52,7 +55,7 @@ export const Form = () => {
 				<CheckBoxInput value={selector.mode} onChange={(e) => setSelector({ mode: e })} />
 				<button
 					type='submit'
-					disabled={userValidation}
+					disabled={!isValidUser}
 					className='grid items-center justify-center text-sm mb-10 lg:mb-0 font-medium p-4 lg:px-10 rounded-lg
                  active:scale-95 active:opacity-50 disabled:opacity-50
                  justify-self-center bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500

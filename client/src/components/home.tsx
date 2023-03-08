@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Form } from './form/form';
-import useStoreState from '../store';
+import useStoreState from '../lib/store';
 import TableCard from './cards/table';
 
 const Home: FC = () => {
-	const [selector, commits, loading, error] = useStoreState((state) => [
+	const [selector, commits, loading, statusResponse] = useStoreState((state) => [
 		state.selector,
 		state.commits,
 		state.loading,
@@ -15,7 +15,7 @@ const Home: FC = () => {
 			<div className=' px-0 lg:px-4 md:px-0 mt-0  lg:mb-16 text-white leading-normal'>
 				<Form />
 				<div className='flex flex-row flex-wrap flex-grow -mt-10 lg:mt-2'>
-					<TableCard {...commits} loading={loading} {...selector} error={error?.message || ''} />
+					<TableCard {...commits} loading={loading} {...selector} error={statusResponse} />
 				</div>
 			</div>
 		</div>

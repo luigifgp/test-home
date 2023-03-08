@@ -1,3 +1,4 @@
+import cx from 'clsx';
 import { FC } from 'react';
 import { Commit } from '../../interface';
 import { Loading } from '../utils/loading';
@@ -8,12 +9,18 @@ interface CommitCardProps {
 }
 
 const CommitCard: FC<CommitCardProps> = ({ data, loading }) => {
+	if (!data.length) return null;
 	const tableNav = ['User', 'Message', 'Date', 'Time'];
 	return (
 		<div className='grid grid-cols-1'>
 			<div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
 				<table className='w-full text-sm text-left  text-secondary '>
-					<thead className='text-xmd text-box duration-700 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500'>
+					<thead
+						className={cx(
+							{ hidden: !data },
+							'text-xmd text-box duration-700 bg-gradient-to-r',
+							'from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500'
+						)}>
 						<tr>
 							{tableNav?.map((nav) => (
 								<th scope='col' className='px-6 py-3'>

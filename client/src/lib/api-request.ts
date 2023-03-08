@@ -9,6 +9,7 @@ export const apiRequest = async (params: string[] | string) => {
 	const response = await fetch(urlRequest, {
 		method: 'GET',
 		headers: {
+			'Content-Type': 'application/json',
 			'x-api-key': `${apiKey}`,
 		},
 	}).then((data) => data.json());

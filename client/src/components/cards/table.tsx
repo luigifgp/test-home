@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import CommitCard from './commit';
 import { Error } from '../utils/error';
-import { Commit } from '../../interface';
+import { Commit, StatusResponse } from '../../interface';
 import cx from 'clsx';
+import { Feedback } from '../utils/feedback';
 
 interface TableCardProps {
 	firstCard: Commit[];
@@ -11,7 +12,7 @@ interface TableCardProps {
 	second: string;
 	first: string;
 	loading: boolean;
-	error?: string;
+	error?: StatusResponse;
 }
 
 const TableCard: FC<TableCardProps> = ({ mode, first, second, firstCard, secondCard, loading, error }) => {
@@ -22,9 +23,9 @@ const TableCard: FC<TableCardProps> = ({ mode, first, second, firstCard, secondC
 					<h5 className='font-bold text-xl text-black'>1:{first}</h5>
 					{mode && <h5 className='font-bold text-xl text-black'>2:{second}</h5>}
 				</div>
-				{error ? (
-					<Error error={error} />
-				) : (
+				{error?.status ? (
+					<Error errorMessage={error.message} />
+				) : firstCard?.length && secondCard?.length ? (
 					<div
 						className={cx(
 							mode ? 'lg:grid-cols-2' : 'grid-cols-1',
@@ -33,6 +34,8 @@ const TableCard: FC<TableCardProps> = ({ mode, first, second, firstCard, secondC
 						<CommitCard data={firstCard} loading={loading} />
 						{secondCard && <CommitCard data={secondCard} loading={loading} />}
 					</div>
+				) : (
+					<Feedback message='Please choose a repository.' />
 				)}
 				<div></div>
 			</div>

@@ -53,6 +53,6 @@ export interface UserCommits {
 }
 
 export interface StatusResponse {
-	message?: string;
-	status?: number;
+	message: string;
+	status?: boolean;
 }
