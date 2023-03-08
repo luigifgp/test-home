@@ -6,12 +6,11 @@ import { SmallLoading } from '../utils/loading';
 interface SearchInputProps {
 	value: string;
 	onChange: (arg: string) => void;
-	selectedName: string;
+	blockButton: boolean;
 	loading: boolean;
-	valid: boolean;
 }
 
-export const SearchInput: FC<SearchInputProps> = ({ value, onChange, loading, valid }) => {
+export const SearchInput: FC<SearchInputProps> = ({ value, blockButton, onChange, loading }) => {
 	const [fetchUserRepos] = useStoreState((state) => [state.fetchUserRepos], shallow);
 	return (
 		<>
@@ -44,9 +43,9 @@ export const SearchInput: FC<SearchInputProps> = ({ value, onChange, loading, va
 			<button
 				onClick={() => fetchUserRepos()}
 				type='button'
-				disabled={valid}
+				disabled={blockButton}
 				className={`text-white font-bold py-2 grid lg:ml-0 justify-center rounded-lg active:scale-95' disabled:opacity-50 w-24
-        ${valid ? 'bg-green-400' : 'bg-red-600'}`}>
+        ${blockButton ? 'bg-green-400' : 'bg-red-600'}`}>
 				{loading ? <SmallLoading /> : 'Valid User'}
 			</button>
 		</>

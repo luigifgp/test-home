@@ -9,7 +9,6 @@ interface CommitCardProps {
 }
 
 const CommitCard: FC<CommitCardProps> = ({ data, loading }) => {
-	if (!data.length) return null;
 	const tableNav = ['User', 'Message', 'Date', 'Time'];
 	return (
 		<div className='grid grid-cols-1'>
@@ -17,7 +16,7 @@ const CommitCard: FC<CommitCardProps> = ({ data, loading }) => {
 				<table className='w-full text-sm text-left  text-secondary '>
 					<thead
 						className={cx(
-							{ hidden: !data },
+							{ hidden: !data?.length },
 							'text-xmd text-box duration-700 bg-gradient-to-r',
 							'from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500'
 						)}>

@@ -8,10 +8,12 @@ interface InitialStoreState {
 	userRepos: UserRepos[];
 	statusResponse?: StatusResponse;
 	selector: RepoSelected;
+	selectedName: string | null;
+	setSelectedName: (payload: string) => void
 	setSelector: (payload: PayloadSetSelector) => void;
-	isValidUser: boolean;
 	commits: UserCommits;
 	fetchCommit: () => void;
+	isValidUser: boolean;
 	fetchUserRepos: () => void;
 	fetchAll: () => void;
 }
@@ -20,20 +22,19 @@ const useStoreState = create<InitialStoreState>()(
 	devtools((set, get) => ({
 		loading: false,
 		selector: { first: '', second: '', name: 'luigifgp', mode: false },
+		selectedName: null,
+		setSelectedName: (payload: string) => set({selectedName: payload}),
 		userRepos: [],
 		commits: { firstCard: [], secondCard: [] },
 		statusResponse: { message: '', status: false },
 		setSelector: (payload: PayloadSetSelector) => set((state) => ({ selector: { ...state.selector, ...payload } })),
-		isValidUser: false,
 		fetchUserRepos: async () => {
 			try {
-				set({ loading: true });
+				set({ loading: true,statusResponse: { message: '', status: false }, });
 				const userRepos = await fetchUserRepos(get().selector?.name);
 				if (userRepos?.length) {
-					const isValid = userRepos[0] && userRepos[0]?.owner?.login === get().selector?.name ? true : false;
-					set({ userRepos, loading: false, isValidUser: isValid });
+					set({ userRepos, loading: false, selectedName: userRepos[0]?.owner?.login });
 				}
-				
 			} catch (err) {
 				set({
 					statusResponse: { message: 'Something wrong happened fetching User Repositories', status: true },
@@ -42,6 +43,7 @@ const useStoreState = create<InitialStoreState>()(
 				console.log(err);
 			}
 		},
+		isValidUser: get()?.selector?.name === get()?.selectedName ?? false,
 		fetchCommit: async () => {
 			try {
 				set({ loading: true });
@@ -49,7 +51,10 @@ const useStoreState = create<InitialStoreState>()(
 				set({ commits, loading: false });
 			} catch (err) {
 				set({
-					statusResponse: { message: 'Something wrong happened fetching User Commits', status: true },
+					statusResponse: {
+						message: 'Ups!! Something wrong happened or we are not allow to accomplish this order.',
+						status: true,
+					},
 					loading: false,
 				});
 				console.log(err);

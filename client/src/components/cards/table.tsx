@@ -25,14 +25,14 @@ const TableCard: FC<TableCardProps> = ({ mode, first, second, firstCard, secondC
 				</div>
 				{error?.status ? (
 					<Error errorMessage={error.message} />
-				) : firstCard?.length && secondCard?.length ? (
+				) : firstCard?.length ? (
 					<div
 						className={cx(
 							mode ? 'lg:grid-cols-2' : 'grid-cols-1',
 							'p-4 lg:grid-flow-col-dense grid-cols-1 grid gap-10 justify-items-stretch'
 						)}>
 						<CommitCard data={firstCard} loading={loading} />
-						{secondCard && <CommitCard data={secondCard} loading={loading} />}
+						{secondCard?.length && <CommitCard data={secondCard} loading={loading} />}
 					</div>
 				) : (
 					<Feedback message='Please choose a repository.' />

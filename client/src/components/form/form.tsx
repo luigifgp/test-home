@@ -1,32 +1,43 @@
 import { SearchInput } from './search-input';
 import { OptionsInput } from './option-input';
 import { CheckBoxInput } from './checkbox-input';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useStoreState from '../../lib/store';
 import { shallow } from 'zustand/shallow';
 
 export const Form = () => {
-	const [selector, setSelector, userRepos, loading, fetchUserRepos, fetchAll, isValidUser] = useStoreState(
-		(state) => [
-			state.selector,
-			state.setSelector,
-			state.userRepos,
-			state.loading,
-			state.fetchUserRepos,
-			state.fetchAll,
-			state.isValidUser,
-		],
-		shallow
-	);
+	const [
+		selector,
+		selectedName,
+		setSelectedName,
+		setSelector,
+		userRepos,
+		loading,
+		fetchUserRepos,
+		fetchAll,
+		isValidUser,
+	] = useStoreState((state) => [
+		state.selector,
+		state.selectedName,
+		state.setSelectedName,
+		state.setSelector,
+		state.userRepos,
+		state.loading,
+		state.fetchUserRepos,
+		state.fetchAll,
+		state.isValidUser,
+	]);
 
 	useEffect(() => {
 		fetchUserRepos();
 	}, []);
-
+	console.log(userRepos, selectedName, selector);
 	const HandleSubmit = async (event: React.FormEvent) => {
+		setSelectedName(selector.name);
 		event.preventDefault();
 		await fetchAll();
 	};
+	const blockButton = isValidUser && selector.name === selectedName;
 	return (
 		<div className='p-10 grid justify-items-stretch lg:grid-cols-18 gap-10 items-center'>
 			<form
@@ -34,8 +45,7 @@ export const Form = () => {
 				onSubmit={HandleSubmit}>
 				<SearchInput
 					loading={loading}
-					valid={isValidUser}
-					selectedName={selector?.name}
+					blockButton={blockButton}
 					value={selector?.name}
 					onChange={(e) => setSelector({ name: e })}
 				/>
@@ -55,7 +65,7 @@ export const Form = () => {
 				<CheckBoxInput value={selector.mode} onChange={(e) => setSelector({ mode: e })} />
 				<button
 					type='submit'
-					disabled={!isValidUser}
+					disabled={!blockButton}
 					className='grid items-center justify-center text-sm mb-10 lg:mb-0 font-medium p-4 lg:px-10 rounded-lg
                  active:scale-95 active:opacity-50 disabled:opacity-50
                  justify-self-center bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500
