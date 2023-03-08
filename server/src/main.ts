@@ -3,22 +3,21 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
-  });
-
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
-    next();
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    allowedHeaders: '*',
-    origin: ['https://client-test-home-luigi18.vercel.app', '*'],
+    origin: [
+      'http://localhost:3000',
+      'https://server-test-home-luigi18.vercel.app',
+      '*',
+    ],
+    allowedHeaders: ['Accept', 'Content-Type', '*'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
     credentials: true,
   });
+
   await app.listen(process.env.PORT || 3000);
   console.log(`server running on PORT ${process.env.PORT || 3000}`);
 }
